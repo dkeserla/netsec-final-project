@@ -1,0 +1,16 @@
+models:
+  - openai/gpt-4o
+  - anthropic/claude-3-opus
+
+prompt_modes:
+  - none
+  - explicit_least_privilege
+
+tasks:
+  - tasks/t01_share_doc.json
+
+repeats: 1
+
+max_steps: 12
+
+out_dir: outputs
