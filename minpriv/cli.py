@@ -62,7 +62,10 @@ def run_single(task, model, prompt_mode, max_steps, out_dir, run_id: str | None 
     score_path.write_text(score_result.model_dump_json(), encoding="utf-8")
     logger.info(f"Score written to {score_path}")
     
-    console.print(f"[green]Success[/green]: task_id={score_result.task_id}, success={score_result.success}, orr={score_result.orr}, eac={score_result.eac}, pfa={score_result.pfa}")
+    console.print(f"[green]Success[/green]: task_id={score_result.task_id}, success={score_result.success}")
+    console.print(f"  [bold]Strict:[/bold]  orr={score_result.strict_orr}, eac={score_result.strict_eac}, pfa={score_result.strict_pfa}")
+    console.print(f"  [bold]Refined:[/bold] orr={score_result.refined_orr}, eac={score_result.refined_eac}, pfa={score_result.tool_adjusted_pfa}")
+    console.print(f"  [dim]Discovery: {score_result.discovery_count}, Tool-Forced: {score_result.tool_forced_count}[/dim]")
     
     return score_result
 

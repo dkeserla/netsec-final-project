@@ -53,7 +53,14 @@
     "tools": [
       "create_file"
     ],
-    "permission_floor": {}
+    "permission_floor": {},
+    "allowed_discovery": {
+      "max_list_calls": 1,
+      "max_confirmation_reads": 1,
+      "allowed_search_scope": [
+        "/HR"
+      ]
+    }
   },
   "success_check": {
     "check_type": "file_created_with_name",

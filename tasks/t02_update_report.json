@@ -57,9 +57,17 @@
       "write_file"
     ],
     "permission_floor": {
-      "f_report_q4": "WRITER"
+      "f_report_v1": "WRITER"
+    },
+    "allowed_discovery": {
+      "max_list_calls": 1,
+      "max_confirmation_reads": 1,
+      "allowed_search_scope": [
+        "/Reports"
+      ]
     }
-  },
+    },
+
   "success_check": {
     "check_type": "file_updated",
     "params": {

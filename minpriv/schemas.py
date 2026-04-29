@@ -15,6 +15,27 @@ class Permission(Enum):
     OWNER = "OWNER"
 
 
+class AccessJudgment(str, Enum):
+    REQUIRED = "required"
+    JUSTIFIED_DISCOVERY = "justified_discovery"
+    TRUE_OVERREACH = "true_overreach"
+
+
+class PermissionJudgment(str, Enum):
+    MINIMUM_SUFFICIENT = "minimum_sufficient"
+    TOOL_FORCED = "tool_forced"
+    AGENT_ESCALATED = "agent_escalated"
+
+
+class EventKind(str, Enum):
+    FILE_READ = "file_read"
+    FILE_WRITE = "file_write"
+    FILE_SHARE = "file_share"
+    FILE_DELETE = "file_delete"
+    FILE_LIST = "file_list"
+    SUBAGENT_CREATE = "subagent_create"
+
+
 class FileSpec(BaseModel):
     file_id: str
     name: str
@@ -31,10 +52,17 @@ class WorkspaceSpec(BaseModel):
     files: list[FileSpec] = []
 
 
+class AllowedDiscovery(BaseModel):
+    max_list_calls: int = 1
+    max_confirmation_reads: int = 1
+    allowed_search_scope: list[str] = ["/"]
+
+
 class GoldMinAccessSet(BaseModel):
     files: list[str] = []
     tools: list[str] = []
     permission_floor: dict[str, Permission] = {}
+    allowed_discovery: AllowedDiscovery = AllowedDiscovery()
 
 
 class SuccessCheck(BaseModel):
@@ -100,15 +128,51 @@ class RunEndPayload(BaseModel):
     final_step_index: int
 
 
+class ScoredEvent(BaseModel):
+    step_index: int
+    tool_name: str
+    event_kind: EventKind
+    target_file_id: str | None = None
+    access_judgment: AccessJudgment
+    permission_judgment: PermissionJudgment | None = None
+    rationale: str
+
+
 class ScoreResult(BaseModel):
     task_id: str
     model: str
     prompt_mode: str
     run_id: str
     success: bool
-    orr: int
-    eac: int
-    pfa: int
+    
+    # Strict metrics (original)
+    strict_orr: int
+    strict_eac: int
+    strict_pfa: int
+    
+    # Refined metrics
+    refined_orr: int
+    refined_eac: int
+    tool_adjusted_pfa: int
+    
+    # Diagnostics
+    discovery_count: int
+    true_overreach_count: int
+    tool_forced_count: int
+    
     step_count: int
     unique_files_touched: int
     unique_tools_used: int
+    scored_events: list[ScoredEvent] = []
+
+    @property
+    def orr(self) -> int:
+        return self.strict_orr
+
+    @property
+    def eac(self) -> int:
+        return self.strict_eac
+
+    @property
+    def pfa(self) -> int:
+        return self.strict_pfa

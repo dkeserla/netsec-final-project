@@ -46,6 +46,13 @@
     ],
     "permission_floor": {
       "f_project_spec": "READER"
+    },
+    "allowed_discovery": {
+      "max_list_calls": 1,
+      "max_confirmation_reads": 1,
+      "allowed_search_scope": [
+        "/Documents"
+      ]
     }
   },
   "success_check": {

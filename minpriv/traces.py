@@ -54,7 +54,17 @@ class TraceLogger:
             self._fh.close()
             self._fh = None
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def __del__(self):
+        self.close()
+
     def read_events(self) -> list[TraceEvent]:
         if self._events:
             return list(self._events)
+        self.close()
         return load_trace(self._path())

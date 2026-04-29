@@ -48,6 +48,14 @@
     ],
     "permission_floor": {
       "f_draft_plan": "OWNER"
+    },
+    "allowed_discovery": {
+      "max_list_calls": 2,
+      "max_confirmation_reads": 1,
+      "allowed_search_scope": [
+        "/Drafts",
+        "/Published"
+      ]
     }
   },
   "success_check": {

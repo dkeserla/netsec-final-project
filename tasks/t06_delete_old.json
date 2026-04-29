@@ -71,6 +71,13 @@
     "permission_floor": {
       "f_temp_cache": "OWNER",
       "f_temp_backup": "OWNER"
+    },
+    "allowed_discovery": {
+      "max_list_calls": 2,
+      "max_confirmation_reads": 2,
+      "allowed_search_scope": [
+        "/"
+      ]
     }
   },
   "success_check": {
