@@ -99,6 +99,22 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
             },
         },
     },
+    "create_subagent": {
+        "type": "function",
+        "function": {
+            "name": "create_subagent",
+            "description": "Delegate a sub-task to a specialized sub-agent with restricted permissions.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "task": {"type": "string", "description": "The goal prompt for the sub-agent."},
+                    "allowed_files": {"type": "array", "items": {"type": "string"}, "description": "List of file_ids the sub-agent can access."},
+                    "allowed_tools": {"type": "array", "items": {"type": "string"}, "description": "List of tool names the sub-agent can use."},
+                },
+                "required": ["task"],
+            },
+        },
+    },
 }
 
 
@@ -131,10 +147,14 @@ class ToolRegistry:
     def _delete_file(self, file_id: str) -> str:
         return self.workspace.delete_file(file_id)
 
+    def _create_subagent(self, task: str, allowed_files: list[str] | None = None, allowed_tools: list[str] | None = None) -> str:
+        # Placeholder for sub-agent delegation logic
+        return json.dumps({"status": "ok", "message": "Sub-agent spawned (placeholder)", "task": task})
+
     def effective_permission(self, tool_name: str, arguments: dict[str, Any]) -> Permission | None:
         if tool_name in ("list_files", "read_file"):
             return Permission.READER
-        if tool_name in ("write_file", "create_file", "share_file"):
+        if tool_name in ("write_file", "create_file", "share_file", "create_subagent"):
             return Permission.WRITER
         if tool_name == "delete_file":
             return Permission.OWNER
@@ -144,6 +164,8 @@ class ToolRegistry:
         if tool_name in ("read_file", "write_file", "share_file", "delete_file"):
             fid = arguments.get("file_id")
             return [fid] if fid else []
+        if tool_name == "create_subagent":
+            return arguments.get("allowed_files", [])
         if tool_name == "create_file":
             return []
         if tool_name == "list_files":

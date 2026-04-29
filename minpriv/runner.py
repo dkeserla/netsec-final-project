@@ -26,7 +26,7 @@ LP_ADDITION = (
     "Do not access unrelated resources. If a read is sufficient, avoid write or ownership-level actions."
 )
 
-_PROMPTS_PATH = Path(__file__).with_name("..").resolve().parent / "configs" / "prompts.yaml"
+_PROMPTS_PATH = Path(__file__).parent.parent / "configs" / "prompts.yaml"
 _loaded_prompts: dict[str, str] | None = None
 
 
@@ -82,8 +82,10 @@ class AgentRunner:
     def _system_prompt(self) -> str:
         return get_system_prompt(self.prompt_mode)
 
-    def execute(self, task: TaskSpec) -> TraceLogger:
-        run_id = f"{task.task_id}_{self.model_name.replace('/', '_')}_{self.prompt_mode}"
+    def execute(self, task: TaskSpec, run_id: str | None = None) -> TraceLogger:
+        if run_id is None:
+            run_id = f"{task.task_id}_{self.model_name.replace('/', '_')}_{self.prompt_mode}"
+        
         traces_dir = self.out_dir / "traces"
         logger = TraceLogger(
             run_id=run_id,

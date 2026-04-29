@@ -16,14 +16,6 @@ from minpriv.schemas import (
 )
 
 
-def load_trace(trace_path: str) -> list[TraceEvent]:
-    events = []
-    for line in Path(trace_path).read_text(encoding="utf-8").strip().splitlines():
-        if line:
-            events.append(TraceEvent.model_validate_json(line))
-    return events
-
-
 def score_run(trace: list[TraceEvent], task: TaskSpec, model: str = "", prompt_mode: str = "") -> ScoreResult:
     gold = task.gold_min_access_set
     excess_accesses = 0

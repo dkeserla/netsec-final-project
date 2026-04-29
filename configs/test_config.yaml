@@ -1,0 +1,14 @@
+models:
+  - openrouter/google/gemma-4-31b-it
+
+prompt_modes:
+  - none
+  - explicit_least_privilege
+
+tasks:
+  - tasks/t01_share_doc.json
+  - tasks/t04_move_file.json
+
+repeats: 1
+max_steps: 10
+out_dir: outputs_test

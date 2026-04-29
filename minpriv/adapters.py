@@ -6,7 +6,10 @@ import json
 import os
 from typing import Any, Protocol
 
+from dotenv import load_dotenv
 from litellm import completion
+
+load_dotenv()
 
 
 class ModelAdapter(Protocol):

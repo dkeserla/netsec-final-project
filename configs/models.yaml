@@ -1,3 +1,5 @@
-claude-sonnet-4.6: anthropic/claude-sonnet-4.6
-gemini-3-flash-preview: google/gemini-3-flash-preview
-gpt-5.4: openai/gpt-5.4
+claude-sonnet-4.6: openrouter/anthropic/claude-3.5-sonnet
+gemini-3-flash-preview: openrouter/google/gemini-flash-1.5
+gpt-5.4: openrouter/openai/gpt-4o
+gemma-2-9b-it: openrouter/google/gemma-2-9b-it
+gemma-4-31b-it: openrouter/google/gemma-4-31b-it

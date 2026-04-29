@@ -9,9 +9,12 @@ from typing import Any
 from minpriv.schemas import TraceEvent, TraceEventType
 
 
-def _read_jsonl(path: Path) -> list[TraceEvent]:
+def load_trace(path: Path | str) -> list[TraceEvent]:
     events: list[TraceEvent] = []
-    for line in path.read_text(encoding="utf-8").strip().splitlines():
+    p = Path(path)
+    if not p.exists():
+        return []
+    for line in p.read_text(encoding="utf-8").strip().splitlines():
         if line:
             events.append(TraceEvent.model_validate_json(line))
     return events
@@ -24,6 +27,7 @@ class TraceLogger:
         self.out_dir = out_dir
         self.out_dir.mkdir(parents=True, exist_ok=True)
         self._fh = None
+        self._events: list[TraceEvent] = []
 
     def _path(self) -> Path:
         return self.out_dir / f"{self.run_id}.jsonl"
@@ -41,6 +45,7 @@ class TraceLogger:
             step_index=step_index,
             payload=payload,
         )
+        self._events.append(event)
         self._file().write(event.model_dump_json() + "\n")
         self._file().flush()
 
@@ -50,7 +55,6 @@ class TraceLogger:
             self._fh = None
 
     def read_events(self) -> list[TraceEvent]:
-        self.close()
-        if self._path().exists():
-            return _read_jsonl(self._path())
-        return []
+        if self._events:
+            return list(self._events)
+        return load_trace(self._path())

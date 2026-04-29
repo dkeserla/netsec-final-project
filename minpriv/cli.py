@@ -9,6 +9,7 @@ from typing import Annotated
 
 import typer
 import yaml
+from dotenv import load_dotenv
 from rich.console import Console
 from rich.logging import RichHandler
 
@@ -16,6 +17,8 @@ from minpriv.runner import AgentRunner
 from minpriv.scoring import aggregate_scores, score_run
 from minpriv.task_loader import load_task
 from minpriv.workspace import Workspace
+
+load_dotenv()
 
 app = typer.Typer()
 console = Console()
@@ -27,7 +30,13 @@ logging.basicConfig(
 logger = logging.getLogger("minpriv")
 
 
-def run_single(task, model, prompt_mode, max_steps, out_dir):
+@app.callback()
+def main():
+    """MinPriv Benchmark Harness."""
+    load_dotenv()
+
+
+def run_single(task, model, prompt_mode, max_steps, out_dir, run_id: str | None = None):
     out_path = Path(out_dir)
     scores_dir = out_path / "scores"
     
@@ -43,7 +52,7 @@ def run_single(task, model, prompt_mode, max_steps, out_dir):
     )
     
     logger.info(f"Running task {task.task_id} with model={model}, prompt_mode={prompt_mode}")
-    trace_logger = runner.execute(task)
+    trace_logger = runner.execute(task, run_id=run_id)
     run_id = trace_logger.run_id
     
     events = trace_logger.read_events()
@@ -150,7 +159,7 @@ def batch(
             run_id = run_id.replace("__", "_")
 
             try:
-                run_single(base_task, model, prompt_mode, max_steps, out_dir)
+                run_single(base_task, model, prompt_mode, max_steps, out_dir, run_id=run_id)
             except Exception as e:
                 logger.error(f"Run failed for {run_id}: {e}")
                 continue
