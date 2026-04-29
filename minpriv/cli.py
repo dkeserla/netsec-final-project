@@ -13,7 +13,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 
 from minpriv.runner import AgentRunner
-from minpriv.scoring import aggregate_scores, load_trace, score_run
+from minpriv.scoring import aggregate_scores, score_run
 from minpriv.task_loader import load_task
 from minpriv.workspace import Workspace
 
@@ -46,7 +46,7 @@ def run_single(task, model, prompt_mode, max_steps, out_dir):
     trace_logger = runner.execute(task)
     run_id = trace_logger.run_id
     
-    events = load_trace(str(trace_logger._path()))
+    events = trace_logger.read_events()
     score_result = score_run(events, task, model=model, prompt_mode=prompt_mode)
     
     score_path = scores_dir / f"{run_id}.json"

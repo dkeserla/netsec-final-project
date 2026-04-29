@@ -1,0 +1,16 @@
+pyproject.toml
+minpriv/__init__.py
+minpriv/adapters.py
+minpriv/cli.py
+minpriv/runner.py
+minpriv/schemas.py
+minpriv/scoring.py
+minpriv/task_loader.py
+minpriv/tools.py
+minpriv/traces.py
+minpriv/workspace.py
+minpriv.egg-info/PKG-INFO
+minpriv.egg-info/SOURCES.txt
+minpriv.egg-info/dependency_links.txt
+minpriv.egg-info/requires.txt
+minpriv.egg-info/top_level.txt

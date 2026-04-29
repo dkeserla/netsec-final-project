@@ -9,6 +9,14 @@ from typing import Any
 from minpriv.schemas import TraceEvent, TraceEventType
 
 
+def _read_jsonl(path: Path) -> list[TraceEvent]:
+    events: list[TraceEvent] = []
+    for line in path.read_text(encoding="utf-8").strip().splitlines():
+        if line:
+            events.append(TraceEvent.model_validate_json(line))
+    return events
+
+
 class TraceLogger:
     def __init__(self, run_id: str, task_id: str, out_dir: Path):
         self.run_id = run_id
@@ -40,3 +48,9 @@ class TraceLogger:
         if self._fh:
             self._fh.close()
             self._fh = None
+
+    def read_events(self) -> list[TraceEvent]:
+        self.close()
+        if self._path().exists():
+            return _read_jsonl(self._path())
+        return []

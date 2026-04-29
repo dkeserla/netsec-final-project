@@ -1,0 +1,11 @@
+pydantic>=2.0
+litellm>=1.0
+typer>=0.12
+pandas>=2.0
+pyyaml>=6.0
+rich>=13.0
+
+[dev]
+pytest>=8.0
+mypy
+ruff
