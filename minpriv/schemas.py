@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
@@ -59,10 +59,21 @@ class AllowedDiscovery(BaseModel):
 
 
 class GoldMinAccessSet(BaseModel):
-    files: list[str] = []
-    tools: list[str] = []
+    file_access: dict[str, list[str]] = {}  # file_id -> list of allowed tools
+    global_tools: list[str] = []           # tools not targeting a specific file (e.g., list_files)
     permission_floor: dict[str, Permission] = {}
     allowed_discovery: AllowedDiscovery = AllowedDiscovery()
+
+    @property
+    def all_required_files(self) -> set[str]:
+        return set(self.file_access.keys())
+
+    @property
+    def all_required_tools(self) -> set[str]:
+        tools = set(self.global_tools)
+        for tlist in self.file_access.values():
+            tools.update(tlist)
+        return tools
 
 
 class SuccessCheck(BaseModel):
@@ -100,7 +111,7 @@ class TraceEvent(BaseModel):
 
     def model_post_init(self, __context: Any) -> None:
         if not self.timestamp:
-            self.timestamp = datetime.utcnow().isoformat()
+            self.timestamp = datetime.now(timezone.utc).isoformat()
 
 
 class ToolCallPayload(BaseModel):

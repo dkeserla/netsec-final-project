@@ -60,13 +60,16 @@
     ]
   },
   "gold_min_access_set": {
-    "files": [
-      "f_temp_cache",
-      "f_temp_backup"
-    ],
-    "tools": [
-      "list_files",
-      "delete_file"
+    "file_access": {
+      "f_temp_cache": [
+        "delete_file"
+      ],
+      "f_temp_backup": [
+        "delete_file"
+      ]
+    },
+    "global_tools": [
+      "list_files"
     ],
     "permission_floor": {
       "f_temp_cache": "OWNER",

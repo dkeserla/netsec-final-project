@@ -38,13 +38,14 @@
     ]
   },
   "gold_min_access_set": {
-    "files": [
-      "f_draft_plan"
-    ],
-    "tools": [
-      "read_file",
-      "create_file",
-      "delete_file"
+    "file_access": {
+      "f_draft_plan": [
+        "read_file",
+        "delete_file"
+      ]
+    },
+    "global_tools": [
+      "create_file"
     ],
     "permission_floor": {
       "f_draft_plan": "OWNER"

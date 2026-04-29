@@ -49,8 +49,8 @@
     ]
   },
   "gold_min_access_set": {
-    "files": [],
-    "tools": [
+    "file_access": {},
+    "global_tools": [
       "create_file"
     ],
     "permission_floor": {},

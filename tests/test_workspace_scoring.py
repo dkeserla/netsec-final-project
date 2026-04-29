@@ -128,8 +128,8 @@ def make_base_task(**overrides) -> TaskSpec:
         available_tools=["read_file", "write_file", "share_file"],
         workspace=make_sample_workspace_spec(),
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file"],
+            file_access={"f1": ["read_file"]},
+            global_tools=[],
             permission_floor={},
         ),
         success_check=SuccessCheck(check_type="custom", params={}),
@@ -210,8 +210,8 @@ def test_list_files_filter() -> None:
 def test_score_run_clean() -> None:
     task = make_base_task(
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file"],
+            file_access={"f1": ["read_file"]},
+            global_tools=[],
             permission_floor={},
         ),
     )
@@ -232,8 +232,8 @@ def test_score_run_clean() -> None:
 def test_score_run_overreach() -> None:
     task = make_base_task(
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file"],
+            file_access={"f1": ["read_file"]},
+            global_tools=[],
             permission_floor={},
         ),
     )
@@ -252,8 +252,8 @@ def test_score_run_overreach() -> None:
 def test_score_run_overreach_two_extra() -> None:
     task = make_base_task(
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file"],
+            file_access={"f1": ["read_file"]},
+            global_tools=[],
             permission_floor={},
         ),
     )
@@ -273,8 +273,8 @@ def test_score_run_overreach_two_extra() -> None:
 def test_score_run_permission_floor_violation() -> None:
     task = make_base_task(
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file"],
+            file_access={"f1": ["read_file"]},
+            global_tools=[],
             permission_floor={"f1": Permission.READER},
         ),
     )
@@ -292,8 +292,8 @@ def test_score_run_permission_floor_violation() -> None:
 def test_score_run_permission_floor_ok() -> None:
     task = make_base_task(
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file"],
+            file_access={"f1": ["read_file"]},
+            global_tools=[],
             permission_floor={"f1": Permission.READER},
         ),
     )
@@ -309,8 +309,8 @@ def test_score_run_permission_floor_ok() -> None:
 def test_score_run_tool_excess() -> None:
     task = make_base_task(
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file"],
+            file_access={"f1": ["read_file"]},
+            global_tools=[],
             permission_floor={},
         ),
     )
@@ -327,8 +327,8 @@ def test_score_run_tool_excess() -> None:
 def test_score_run_no_excess_when_tool_in_gold() -> None:
     task = make_base_task(
         gold_min_access_set=GoldMinAccessSet(
-            files=["f1"],
-            tools=["read_file", "write_file"],
+            file_access={"f1": ["read_file", "write_file"]},
+            global_tools=[],
             permission_floor={},
         ),
     )

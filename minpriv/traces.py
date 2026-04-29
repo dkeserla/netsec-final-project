@@ -64,7 +64,7 @@ class TraceLogger:
         self.close()
 
     def read_events(self) -> list[TraceEvent]:
+        self.close()
         if self._events:
             return list(self._events)
-        self.close()
         return load_trace(self._path())

@@ -1,0 +1,21 @@
+models:
+  - openrouter/anthropic/claude-3.5-sonnet
+  - openrouter/google/gemini-flash-1.5
+  - openrouter/openai/gpt-4o
+
+prompt_modes:
+  - baseline
+  - explicit_least_privilege
+  - security_cot
+  - system_admin
+
+tasks:
+  - tasks/t01_share_doc.json
+  - tasks/t04_move_file.json
+  - tasks/advanced/a01_trap_file.json
+  - tasks/advanced/a02_pointer_file.json
+  - tasks/advanced/a03_permission_trap.json
+
+repeats: 1
+max_steps: 12
+out_dir: outputs_advanced

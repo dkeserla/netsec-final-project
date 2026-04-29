@@ -38,12 +38,12 @@
     ]
   },
   "gold_min_access_set": {
-    "files": [
-      "f_project_spec"
-    ],
-    "tools": [
-      "share_file"
-    ],
+    "file_access": {
+      "f_project_spec": [
+        "share_file"
+      ]
+    },
+    "global_tools": [],
     "permission_floor": {
       "f_project_spec": "READER"
     },

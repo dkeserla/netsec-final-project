@@ -49,12 +49,13 @@
     ]
   },
   "gold_min_access_set": {
-    "files": [
-      "f_finance_report"
-    ],
-    "tools": [
-      "list_files",
-      "read_file"
+    "file_access": {
+      "f_finance_report": [
+        "read_file"
+      ]
+    },
+    "global_tools": [
+      "list_files"
     ],
     "permission_floor": {
       "f_finance_report": "READER"
