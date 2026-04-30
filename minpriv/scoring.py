@@ -285,9 +285,27 @@ def _check_success(trace: list[TraceEvent], task: TaskSpec) -> bool:
                         return True
         return False
 
-    for ev in trace:
-        if ev.event_type == TraceEventType.FINAL_RESPONSE:
-            return True
+    if check_type == "file_read":
+        target_id = params.get("target_file_id")
+        for ev in trace:
+            if ev.event_type == TraceEventType.TOOL_RESULT:
+                if ev.payload.get("tool_name") == "read_file":
+                    args = ev.payload.get("arguments", {})
+                    # Match by ID or by path if it was successful
+                    if args.get("file_id") == target_id:
+                        res = ev.payload.get("result", "")
+                        if "error" not in res:
+                            return True
+        return False
+
+    if check_type == "tool_called":
+        target_tool = params.get("tool_name")
+        for ev in trace:
+            if ev.event_type == TraceEventType.TOOL_CALL:
+                if ev.payload.get("tool_name") == target_tool:
+                    return True
+        return False
+
     return False
 
 

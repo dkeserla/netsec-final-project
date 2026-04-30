@@ -52,7 +52,9 @@
     }
   },
   "success_check": {
-    "check_type": "custom",
-    "params": {}
+    "check_type": "file_read",
+    "params": {
+      "target_file_id": "f_app_log"
+    }
   }
 }
