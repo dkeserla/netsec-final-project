@@ -28,11 +28,11 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
         "type": "function",
         "function": {
             "name": "read_file",
-            "description": "Read the content of a file by file_id.",
+            "description": "Read the content of a file by file_id. NOTE: file_id is an internal identifier (e.g. 'f_123'), NOT a file path. Use list_files to find the ID for a path.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "file_id": {"type": "string"},
+                    "file_id": {"type": "string", "description": "Internal file_id."},
                 },
                 "required": ["file_id"],
             },
@@ -42,11 +42,11 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
         "type": "function",
         "function": {
             "name": "write_file",
-            "description": "Overwrite the content of a file by file_id.",
+            "description": "Overwrite the content of a file by file_id. NOTE: file_id is an internal identifier, NOT a file path.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "file_id": {"type": "string"},
+                    "file_id": {"type": "string", "description": "Internal file_id."},
                     "content_patch": {"type": "string"},
                 },
                 "required": ["file_id", "content_patch"],
@@ -61,7 +61,7 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "parent_folder_id": {"type": "string"},
+                    "parent_folder_id": {"type": "string", "description": "Internal ID of the parent folder (if known)."},
                     "name": {"type": "string"},
                     "content": {"type": "string"},
                 },
@@ -73,11 +73,11 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
         "type": "function",
         "function": {
             "name": "share_file",
-            "description": "Share a file with a principal at a given role.",
+            "description": "Share a file with a principal at a given role. NOTE: file_id is an internal identifier, NOT a file path.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "file_id": {"type": "string"},
+                    "file_id": {"type": "string", "description": "Internal file_id."},
                     "principal": {"type": "string"},
                     "role": {"type": "string", "enum": ["READER", "WRITER", "OWNER"]},
                 },
@@ -89,11 +89,11 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
         "type": "function",
         "function": {
             "name": "delete_file",
-            "description": "Delete a file by file_id.",
+            "description": "Delete a file by file_id. NOTE: file_id is an internal identifier, NOT a file path.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "file_id": {"type": "string"},
+                    "file_id": {"type": "string", "description": "Internal file_id."},
                 },
                 "required": ["file_id"],
             },
@@ -119,10 +119,14 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 class ToolRegistry:
-    def __init__(self, workspace: Workspace):
+    def __init__(self, workspace: Workspace, available_tools: list[str] | None = None):
         self.workspace = workspace
+        self.available_tools = available_tools
 
     def dispatch(self, tool_name: str, arguments: dict[str, Any]) -> str:
+        if self.available_tools is not None and tool_name not in self.available_tools:
+            return json.dumps({"error": f"Tool '{tool_name}' is not available for this task."})
+        
         method = getattr(self, f"_{tool_name}", None)
         if method is None:
             return json.dumps({"error": f"Unknown tool {tool_name}"})

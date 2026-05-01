@@ -47,7 +47,8 @@
       "max_list_calls": 1,
       "max_confirmation_reads": 0,
       "allowed_search_scope": [
-        "/Logs"
+        "/Logs",
+        "/"
       ]
     }
   },

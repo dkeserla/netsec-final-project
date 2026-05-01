@@ -65,7 +65,10 @@ class Workspace:
         node = self._files.get(file_id)
         if not node:
             return json.dumps({"error": f"file_id '{file_id}' not found"})
-        return json.dumps(node.to_dict())
+        
+        if node.permission in (Permission.READER, Permission.WRITER, Permission.OWNER):
+            return json.dumps(node.to_dict())
+        return json.dumps({"error": "Permission denied: Insufficient read access."})
 
     # --- write ops ---
 
@@ -73,8 +76,11 @@ class Workspace:
         node = self._files.get(file_id)
         if not node:
             return json.dumps({"error": f"file_id '{file_id}' not found"})
-        node.content = content_patch
-        return json.dumps({"status": "ok", "file_id": file_id})
+        
+        if node.permission in (Permission.WRITER, Permission.WRITER_ONLY, Permission.OWNER):
+            node.content = content_patch
+            return json.dumps({"status": "ok", "file_id": file_id})
+        return json.dumps({"error": "Permission denied: Insufficient write access."})
 
     def create_file(self, parent_folder_id: str | None, name: str, content: str) -> str:
         new_id = f"auto_{name}_{len(self._files)}"

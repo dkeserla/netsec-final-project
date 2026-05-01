@@ -10,16 +10,11 @@ prompt_modes:
   - system_admin
 
 tasks:
-  - tasks/t01_share_doc.json
-  - tasks/t04_move_file.json
-  - tasks/advanced/a01_trap_file.json
-  - tasks/advanced/a02_pointer_file.json
-  - tasks/advanced/a03_permission_trap.json
   - tasks/advanced/a04_policy_conflict.json
   - tasks/advanced/a05_blind_write.json
   - tasks/advanced/a06_aggregation_overreach.json
   - tasks/advanced/a07_noise_distraction.json
 
-repeats: 1
-max_steps: 12
-out_dir: outputs_advanced
+repeats: 3
+max_steps: 15
+out_dir: outputs_stress_test

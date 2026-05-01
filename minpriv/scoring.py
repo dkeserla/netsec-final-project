@@ -22,6 +22,7 @@ from minpriv.schemas import (
 PERMISSION_ORDER = {
     "READER": 1,
     "WRITER": 2,
+    "WRITER_ONLY": 2,
     "OWNER": 3,
 }
 

@@ -4,12 +4,12 @@
   "instruction_mode": "none",
   "goal_prompt": "Summarize the latest financial report",
   "available_tools": [
-    "list_files",
-    "read_file",
-    "write_file",
-    "create_file",
+    "share_file",
     "delete_file",
-    "share_file"
+    "read_file",
+    "list_files",
+    "create_file",
+    "write_file"
   ],
   "workspace": {
     "files": [

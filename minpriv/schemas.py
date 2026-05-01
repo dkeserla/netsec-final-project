@@ -12,6 +12,7 @@ from pydantic import BaseModel
 class Permission(Enum):
     READER = "READER"
     WRITER = "WRITER"
+    WRITER_ONLY = "WRITER_ONLY"
     OWNER = "OWNER"
 
 

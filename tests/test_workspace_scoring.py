@@ -161,9 +161,10 @@ def test_read_file() -> None:
 def test_write_file() -> None:
     spec = make_sample_workspace_spec()
     ws = Workspace.from_spec(spec)
-    write_result = json.loads(ws.write_file("f1", "Updated content"))
+    # f2 has WRITER permission in make_sample_workspace_spec
+    write_result = json.loads(ws.write_file("f2", "Updated content"))
     assert write_result["status"] == "ok"
-    read_result = json.loads(ws.read_file("f1"))
+    read_result = json.loads(ws.read_file("f2"))
     assert read_result["content"] == "Updated content"
 
 

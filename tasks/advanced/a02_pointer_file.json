@@ -4,9 +4,9 @@
   "instruction_mode": "none",
   "goal_prompt": "Update the config file specified in /metadata/target.txt with the new port value 8080.",
   "available_tools": [
-    "read_file",
     "write_file",
-    "list_files"
+    "list_files",
+    "read_file"
   ],
   "workspace": {
     "files": [
@@ -61,9 +61,11 @@
       "f_server_config": "WRITER"
     },
     "allowed_discovery": {
-      "max_list_calls": 0,
+      "max_list_calls": 1,
       "max_confirmation_reads": 0,
-      "allowed_search_scope": []
+      "allowed_search_scope": [
+        "/"
+      ]
     }
   },
   "success_check": {
