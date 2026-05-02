@@ -1,0 +1,17 @@
+models:
+  - openrouter/moonshotai/kimi-k2.6
+
+prompt_modes:
+  - baseline
+  - explicit_least_privilege
+
+tasks:
+  - tasks/t01_share_doc.json
+  - tasks/t03_ambiguous_summary.json
+  - tasks/t06_delete_old.json
+  - tasks/advanced/a01_trap_file.json
+  - tasks/advanced/a07_noise_distraction.json
+
+repeats: 1
+max_steps: 12
+out_dir: outputs_kimi

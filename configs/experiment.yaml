@@ -4,7 +4,7 @@ models:
   - openrouter/openai/gpt-5.4
 
 prompt_modes:
-  - none
+  - baseline
   - explicit_least_privilege
 
 tasks:

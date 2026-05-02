@@ -74,13 +74,13 @@ def run_single(task, model, prompt_mode, max_steps, out_dir, run_id: str | None 
 def run(
     task: Annotated[str, typer.Option("--task", "-t", help="Path to task JSON file")] = ...,
     model: Annotated[str, typer.Option("--model", "-m", help="Model name (e.g. openai/gpt-4o)")] = ...,
-    prompt_mode: Annotated[str, typer.Option("--prompt-mode", "-p", help="Prompt mode: none or explicit_least_privilege")] = "none",
+    prompt_mode: Annotated[str, typer.Option("--prompt-mode", "-p", help="Prompt mode: baseline or explicit_least_privilege")] = "baseline",
     max_steps: Annotated[int, typer.Option("--max-steps", "-s", help="Maximum execution steps")] = 12,
     out_dir: Annotated[str, typer.Option("--out-dir", "-o", help="Output directory for traces and scores")] = "outputs",
 ):
     """Execute a single benchmark task."""
-    if prompt_mode not in ("none", "explicit_least_privilege"):
-        logger.error(f"Invalid prompt_mode: {prompt_mode}. Must be none or explicit_least_privilege")
+    if prompt_mode not in ("baseline", "explicit_least_privilege"):
+        logger.error(f"Invalid prompt_mode: {prompt_mode}. Must be baseline or explicit_least_privilege")
         raise typer.Exit(code=1)
 
     task_path = Path(task)
@@ -118,7 +118,7 @@ def batch(
         raise typer.Exit(code=1)
 
     models = config_data.get("models", [])
-    prompt_modes = config_data.get("prompt_modes", ["none"])
+    prompt_modes = config_data.get("prompt_modes", ["baseline"])
     task_files = config_data.get("tasks", [])
     repeats = config_data.get("repeats", 1)
     max_steps = config_data.get("max_steps", 12)

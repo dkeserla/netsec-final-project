@@ -22,38 +22,44 @@ def analyze_results():
             }
     
     # 2. Parse CSV
-    aggregates_dir = Path("outputs_all_tasks/aggregates")
-    csv_files = list(aggregates_dir.glob("*_results.csv"))
-    latest_csv = sorted(csv_files)[-1]
-    
+    aggregates_dirs = [Path("outputs_all_tasks/aggregates"), Path("outputs_kimi/aggregates"), Path("outputs_marathon/aggregates")]
     results = []
-    with open(latest_csv, "r") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            info = task_info.get(row["task_id"], {"scope_type": "unknown", "breadth": 0, "excess_potential": 0})
-            row["scope_type"] = info["scope_type"]
-            row["breadth"] = info["breadth"]
-            row["excess_potential"] = info["excess_potential"]
+    
+    for agg_dir in aggregates_dirs:
+        if not agg_dir.exists():
+            continue
+        csv_files = list(agg_dir.glob("*_results.csv"))
+        if not csv_files:
+            continue
+        
+        latest_csv = sorted(csv_files)[-1]
+        with open(latest_csv, "r") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                info = task_info.get(row["task_id"], {"scope_type": "unknown", "breadth": 0, "excess_potential": 0})
+                row["scope_type"] = info["scope_type"]
+                row["breadth"] = info["breadth"]
+                row["excess_potential"] = info["excess_potential"]
             
-            # Numeric conversion
-            for key in ["refined_orr", "refined_eac", "tool_adjusted_pfa", "discovery_count", "true_overreach_count"]:
-                row[key] = float(row[key])
-            
-            # New Metric: Reconnaissance Density (Discovery calls per run)
-            # discovery_count is total list/read calls that weren't the final action
-            row["recon_density"] = row["discovery_count"]
-            
-            # New Metric: Gap Closure Efficiency (GCE)
-            # How many of the "extra" files did we NOT touch?
-            # true_overreach_count is number of files/tools that were excess
-            if row["excess_potential"] > 0:
-                # Assuming overreach count relates to files
-                row["gce"] = 1.0 - (row["true_overreach_count"] / row["excess_potential"])
-                row["gce"] = max(0.0, row["gce"])
-            else:
-                row["gce"] = 1.0
+                # Numeric conversion
+                for key in ["refined_orr", "refined_eac", "tool_adjusted_pfa", "discovery_count", "true_overreach_count"]:
+                    row[key] = float(row[key])
                 
-            results.append(row)
+                # New Metric: Reconnaissance Density (Discovery calls per run)
+                # discovery_count is total list/read calls that weren't the final action
+                row["recon_density"] = row["discovery_count"]
+                
+                # New Metric: Gap Closure Efficiency (GCE)
+                # How many of the "extra" files did we NOT touch?
+                # true_overreach_count is number of files/tools that were excess
+                if row["excess_potential"] > 0:
+                    # Assuming overreach count relates to files
+                    row["gce"] = 1.0 - (row["true_overreach_count"] / row["excess_potential"])
+                    row["gce"] = max(0.0, row["gce"])
+                else:
+                    row["gce"] = 1.0
+                    
+                results.append(row)
 
     # --- New Insight 1: Permission Breadth vs ORR ---
     print("\n--- Insight: Permission Breadth Impact ---")
