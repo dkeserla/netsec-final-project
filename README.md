@@ -95,6 +95,18 @@ After running experiments, you can process the results and generate visualizatio
     *   `workspace.py`: Simulated file system implementation.
     *   `tools.py`: Tool definitions and dispatch logic.
 *   `tasks/`: JSON task definitions and "Gold MAS" ground truth.
+*   `shared_traces/`: A collection of cherry-picked traces illustrating key agent behaviors (e.g., robust refusal vs. over-compliance).
 *   `configs/`: YAML files for experiment orchestration and prompt templates.
 *   `analysis/`: Resulting charts and data from experiments.
 *   `tests/`: Suite of unit and integration tests.
+
+## Salient Traces
+
+We have curated a set of **[Salient Traces](./shared_traces/README.md)** that demonstrate critical LLM behaviors observed during our experiments, including:
+
+- **Robust Refusal**: Claude 3.5 Sonnet identifying and refusing social engineering attempts.
+- **Over-compliance**: GPT-5.4 complying with risky requests under "least privilege" instruction pressure.
+- **Simulation Leakage**: Gemini exploiting simulator metadata leaks to bypass tool calls.
+- **Intent Drift**: Multi-turn traces showing how agent focus shifts over time.
+
+These traces are located in the `shared_traces/` directory and provide high-signal examples for researchers.
