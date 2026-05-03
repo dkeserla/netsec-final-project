@@ -70,7 +70,7 @@ def generate_scientific_visualizations():
     ax.set_ylim(0, max(discovery_baseline + discovery_lp + [1.0]) * 1.3)
     ax.legend(frameon=True, shadow=True)
     plt.tight_layout()
-    plt.savefig('analysis/figure8_verification_tax.png', bbox_inches='tight')
+    plt.savefig('figures/figure8_verification_tax.png', bbox_inches='tight')
     plt.close()
 
     # --- FIGURE 9: THE SURGICAL TRIGGER PARADOX (Binned Analysis) ---
@@ -112,7 +112,7 @@ def generate_scientific_visualizations():
     ax.grid(axis='y', linestyle='--', alpha=0.7)
     
     plt.tight_layout()
-    plt.savefig('analysis/figure9_surgical_trigger.png', bbox_inches='tight')
+    plt.savefig('figures/figure9_surgical_trigger.png', bbox_inches='tight')
     plt.close()
 
     # --- FIGURE 10: MODEL SECURITY FINGERPRINTS (Polar/Radar Approximation) ---
@@ -141,7 +141,7 @@ def generate_scientific_visualizations():
     ax.legend(loc='upper right', frameon=True, shadow=True, ncol=2)
     ax.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig('analysis/figure10_fingerprints.png', bbox_inches='tight')
+    plt.savefig('figures/figure10_fingerprints.png', bbox_inches='tight')
     plt.close()
 
     print("Scientific-grade visualizations (8-10) generated.")

@@ -108,7 +108,7 @@ def generate_visualizations():
     ax.set_ylim(0, max([get_avg(v) for v in fig1_groups.values()] + [10]) * 1.3)
     ax.legend(frameon=True, shadow=True)
     plt.tight_layout()
-    plt.savefig('analysis/figure1_orr_scope.png', bbox_inches='tight')
+    plt.savefig('figures/figure1_orr_scope.png', bbox_inches='tight')
     plt.close()
 
     # Figure 2: ORR by Model
@@ -122,7 +122,7 @@ def generate_visualizations():
     mode_labels = {"baseline": "No Instruction", "explicit_least_privilege": "Explicit LP"}
     
     for i, mode in enumerate(modes):
-        vals = [get_avg(fig2_groups[(m, mode)]) for m in models]
+        vals = [get_avg(fig2_groups[(m, mode)]) for m in modes]
         bars = ax.bar(x + (i - 0.5) * width, vals, width, label=mode_labels[mode], alpha=0.85, edgecolor='black', linewidth=0.8)
         for bar in bars:
             height = bar.get_height()
@@ -135,7 +135,7 @@ def generate_visualizations():
     ax.set_ylim(0, max([get_avg(v) for v in fig2_groups.values()] + [15]) * 1.2)
     ax.legend(frameon=True, shadow=True)
     plt.tight_layout()
-    plt.savefig('analysis/figure2_orr_model.png', bbox_inches='tight')
+    plt.savefig('figures/figure2_orr_model.png', bbox_inches='tight')
     plt.close()
 
     # Figure 3: Mean EAC by Scope and Condition
@@ -159,7 +159,7 @@ def generate_visualizations():
     ax.set_xticklabels([s.replace('_', ' ').title() for s in scopes], fontweight='bold')
     ax.legend(frameon=True, shadow=True)
     plt.tight_layout()
-    plt.savefig('analysis/figure3_eac.png', bbox_inches='tight')
+    plt.savefig('figures/figure3_eac.png', bbox_inches='tight')
     plt.close()
 
     # Figure 4: PFA by Model
@@ -178,7 +178,7 @@ def generate_visualizations():
     ax.set_title('Figure 4: Permission Floor Adherence by Model', pad=20)
     ax.set_ylim(0, 115)
     plt.tight_layout()
-    plt.savefig('analysis/figure4_pfa.png', bbox_inches='tight')
+    plt.savefig('figures/figure4_pfa.png', bbox_inches='tight')
     plt.close()
 
     # Advanced Figures (5-7)
@@ -199,7 +199,7 @@ def generate_visualizations():
     ax.set_title('Figure 5: Gap Closure Efficiency by Model', pad=20)
     ax.set_ylim(0, 115)
     plt.tight_layout()
-    plt.savefig('analysis/figure5_gce.png', bbox_inches='tight')
+    plt.savefig('figures/figure5_gce.png', bbox_inches='tight')
     plt.close()
 
     # Figure 6: Recon
@@ -220,7 +220,7 @@ def generate_visualizations():
     ax.set_title('Figure 6: Reconnaissance Density by Condition', pad=20)
     ax.set_ylim(0, max(vals + [1.0]) * 1.3)
     plt.tight_layout()
-    plt.savefig('analysis/figure6_recon.png', bbox_inches='tight')
+    plt.savefig('figures/figure6_recon.png', bbox_inches='tight')
     plt.close()
 
     # Figure 7: Breadth
@@ -242,10 +242,10 @@ def generate_visualizations():
     ax.set_title('Figure 7: ORR by Permission Breadth', pad=20)
     ax.set_ylim(0, max(vals + [10]) * 1.3)
     plt.tight_layout()
-    plt.savefig('analysis/figure7_breadth.png', bbox_inches='tight')
+    plt.savefig('figures/figure7_breadth.png', bbox_inches='tight')
     plt.close()
 
-    print("All graphs (1-7) generated in analysis/")
+    print("All graphs (1-7) generated in figures/")
 
 if __name__ == "__main__":
     generate_visualizations()
